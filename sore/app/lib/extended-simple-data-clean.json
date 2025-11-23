@@ -1,0 +1,19 @@
+[
+  {"Nodo_origen": "Aula_100", "Nodo_destino": "Pasillo_10", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 5, "Factor_congestion": 1.0, "Peso_total": 5.0},
+  {"Nodo_origen": "Aula_101", "Nodo_destino": "Pasillo_11", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 6, "Factor_congestion": 1.1, "Peso_total": 6.6},
+  {"Nodo_origen": "Aula_102", "Nodo_destino": "Pasillo_12", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 7, "Factor_congestion": 1.2, "Peso_total": 8.4},
+  {"Nodo_origen": "Aula_103", "Nodo_destino": "Pasillo_13", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 8, "Factor_congestion": 1.3, "Peso_total": 10.4},
+  {"Nodo_origen": "Aula_104", "Nodo_destino": "Pasillo_14", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 9, "Factor_congestion": 1.4, "Peso_total": 12.6},
+  {"Nodo_origen": "Aula_105", "Nodo_destino": "Pasillo_15", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 10, "Factor_congestion": 1.5, "Peso_total": 15.0},
+  {"Nodo_origen": "Aula_106", "Nodo_destino": "Pasillo_16", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 11, "Factor_congestion": 1.6, "Peso_total": 17.6},
+  {"Nodo_origen": "Aula_107", "Nodo_destino": "Pasillo_17", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 12, "Factor_congestion": 1.7, "Peso_total": 20.4},
+  {"Nodo_origen": "Aula_108", "Nodo_destino": "Pasillo_18", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 13, "Factor_congestion": 1.8, "Peso_total": 23.4},
+  {"Nodo_origen": "Aula_109", "Nodo_destino": "Pasillo_19", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 14, "Factor_congestion": 1.9, "Peso_total": 26.6},
+  {"Nodo_origen": "Aula_110", "Nodo_destino": "Pasillo_20", "Tipo_conexion": "Puerta", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 15, "Factor_congestion": 2.0, "Peso_total": 30.0},
+  {"Nodo_origen": "Pasillo_10", "Nodo_destino": "Pasillo_20", "Tipo_conexion": "Pasillo", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 20, "Factor_congestion": 1.1, "Peso_total": 22.0},
+  {"Nodo_origen": "Pasillo_20", "Nodo_destino": "Salida_Principal", "Tipo_conexion": "Pasillo", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 25, "Factor_congestion": 1.0, "Peso_total": 25.0},
+  {"Nodo_origen": "Escalera_1", "Nodo_destino": "Pasillo_10", "Tipo_conexion": "Escalera", "Piso_origen": 2, "Piso_destino": 1, "Distancia_m": 12, "Factor_congestion": 1.5, "Peso_total": 18.0},
+  {"Nodo_origen": "Aula_201", "Nodo_destino": "Pasillo_21", "Tipo_conexion": "Puerta", "Piso_origen": 2, "Piso_destino": 2, "Distancia_m": 8, "Factor_congestion": 1.0, "Peso_total": 8.0},
+  {"Nodo_origen": "Pasillo_21", "Nodo_destino": "Escalera_1", "Tipo_conexion": "Pasillo", "Piso_origen": 2, "Piso_destino": 2, "Distancia_m": 15, "Factor_congestion": 1.2, "Peso_total": 18.0},
+  {"Nodo_origen": "Pasillo_15", "Nodo_destino": "Salida_Emergencia", "Tipo_conexion": "Pasillo", "Piso_origen": 1, "Piso_destino": 1, "Distancia_m": 30, "Factor_congestion": 1.0, "Peso_total": 30.0}
+]
