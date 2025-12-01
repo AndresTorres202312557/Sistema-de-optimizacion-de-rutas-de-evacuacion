@@ -28,7 +28,50 @@ export function leerDatasetExcel(): Row[] {
     console.log(`1000-connection dataset loaded successfully with ${jsonData.length} entries`);
     
     // Dataset already has all necessary connections
-    const conexionesPrincipales: any[] = [];
+    const conexionesPrincipales: any[] = [
+      // Conexiones críticas para conectar pasillos aislados del piso 4
+      {
+        Nodo_origen: "Pasillo_410",
+        Nodo_destino: "Pasillo_400",
+        Tipo_conexion: "Pasillo",
+        Piso_origen: 4,
+        Piso_destino: 4,
+        Distancia_m: 10,
+        Factor_congestion: 1.2,
+        Peso_total: 12.0
+      },
+      {
+        Nodo_origen: "Pasillo_418",
+        Nodo_destino: "Pasillo_410",
+        Tipo_conexion: "Pasillo",
+        Piso_origen: 4,
+        Piso_destino: 4,
+        Distancia_m: 8,
+        Factor_congestion: 1.2,
+        Peso_total: 9.6
+      },
+      // Más conexiones para asegurar conectividad en otros pisos si es necesario
+      {
+        Nodo_origen: "Pasillo_310",
+        Nodo_destino: "Pasillo_300",
+        Tipo_conexion: "Pasillo",
+        Piso_origen: 3,
+        Piso_destino: 3,
+        Distancia_m: 10,
+        Factor_congestion: 1.2,
+        Peso_total: 12.0
+      },
+      {
+        Nodo_origen: "Pasillo_210",
+        Nodo_destino: "Pasillo_200",
+        Tipo_conexion: "Pasillo",
+        Piso_origen: 2,
+        Piso_destino: 2,
+        Distancia_m: 10,
+        Factor_congestion: 1.2,
+        Peso_total: 12.0
+      }
+    ];
     
     jsonData = [...jsonData, ...conexionesPrincipales];
   } catch (error) {

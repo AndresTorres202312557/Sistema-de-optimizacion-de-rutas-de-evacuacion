@@ -92,12 +92,12 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
     
     // Posicionar nodos por piso aprovechando mejor el espacio disponible
     Array.from(nodesByPiso.entries()).forEach(([piso, pisoNodes]) => {
-      // Coordenadas que coinciden exactamente con los rectángulos de los pisos
-      const pisoY = 80 + (piso - 1) * 320 - 30; // Misma fórmula que los rectángulos
+      // Coordenadas que coinciden exactamente con los rectángulos de los pisos ampliados
+      const pisoY = 80 + (piso - 1) * 400 - 30; // Nueva fórmula para pisos más separados
       const pisoTop = pisoY;
-      const pisoBottom = pisoY + 280;
+      const pisoBottom = pisoY + 350;
       const pisoLeft = 30;
-      const pisoRight = 30 + 1720;
+      const pisoRight = 30 + 2320;
       
       // Separar por tipos para mejor organización
       const aulas = pisoNodes.filter(n => getNodeType(n) === 'aula');
@@ -106,11 +106,11 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
       
       // Posicionar aulas asegurando que estén dentro del recuadro del piso
       aulas.forEach((nodeId, index) => {
-        const colsPerRow = 16; // Más aulas por fila
+        const colsPerRow = 20; // Más aulas por fila con el espacio ampliado
         const col = index % colsPerRow;
         const row = Math.floor(index / colsPerRow);
-        const x = pisoLeft + 60 + col * 100; // Dentro del límite izquierdo y derecho
-        const y = pisoTop + 50 + row * 35; // Dentro del límite superior e inferior
+        const x = pisoLeft + 80 + col * 110; // Mejor distribución horizontal
+        const y = pisoTop + 60 + row * 40; // Mejor distribución vertical
         
         nodeMap.set(nodeId, {
           id: nodeId,
@@ -123,11 +123,12 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
       
       // Posicionar pasillos optimizando el espacio disponible
       pasillos.forEach((nodeId, index) => {
-        const rowsPerCol = 6; // Máximo pasillos por columna
+        const rowsPerCol = 8; // Más pasillos por columna
         const row = index % rowsPerCol;
         const col = Math.floor(index / rowsPerCol);
-        const x = pisoLeft + 40 + col * 80; // Lado izquierdo dentro del límite
-        const y = pisoTop + 40 + row * 35; // Distribución vertical dentro del límite
+        // Posición central entre las aulas, aprovechando el espacio ampliado
+        const x = pisoLeft + 1100 + col * 120; // Posición central del marco ampliado
+        const y = pisoTop + 100 + row * 35; // Distribución vertical centrada
         
         nodeMap.set(nodeId, {
           id: nodeId,
@@ -141,8 +142,8 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
       // Posicionar salidas en el piso 1
       if (piso === 1) {
         salidas.forEach((nodeId, index) => {
-          const x = pisoLeft + 400 + index * 200;
-          const y = pisoBottom - 60; // Parte inferior del recuadro del piso 1
+          const x = pisoRight + 50 + index * 80; // Afuera del recuadro, lado derecho
+          const y = pisoTop + 40; // A la altura superior del piso 1
           
           nodeMap.set(nodeId, {
             id: nodeId,
@@ -155,25 +156,27 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
       }
     });    // Posicionar escaleras entre pisos según su nombre
     const todasEscaleras = nodes.filter(n => getNodeType(n) === 'escalera');
+    const escaleraBaseX = 2300; // Posición X fija para todas las escaleras (más a la derecha)
+    
     todasEscaleras.forEach((nodeId, index) => {
       let yPos = 0;
       
       // Determinar posición Y según el nombre de la escalera con nuevo espaciado
       if (nodeId.includes('1_2') || nodeId.includes('Escalera_1')) {
         // Entre piso 1 y 2
-        yPos = 80 + (1 - 1) * 320 + 260; // Final del piso 1
+        yPos = 80 + (1 - 1) * 400 + 320; // Final del piso 1 ampliado
       } else if (nodeId.includes('2_3') || nodeId.includes('Escalera_2')) {
         // Entre piso 2 y 3
-        yPos = 80 + (2 - 1) * 320 + 260; // Final del piso 2
+        yPos = 80 + (2 - 1) * 400 + 320; // Final del piso 2 ampliado
       } else if (nodeId.includes('3_4') || nodeId.includes('Escalera_3')) {
         // Entre piso 3 y 4
-        yPos = 80 + (3 - 1) * 320 + 260; // Final del piso 3
+        yPos = 80 + (3 - 1) * 400 + 320; // Final del piso 3 ampliado
       } else {
         // Escaleras genéricas entre piso 1 y 2
-        yPos = 80 + (1 - 1) * 320 + 260;
+        yPos = 80 + (1 - 1) * 400 + 320;
       }
       
-      const x = 1800 + (index % 3) * 80; // Lado derecho, múltiples columnas
+      const x = escaleraBaseX; // Misma posición X para todas las escaleras
       
       nodeMap.set(nodeId, {
         id: nodeId,
@@ -236,12 +239,12 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
   });
 
   // Función para obtener el color del nodo (según las imágenes)
-  const getNodeColor = (type: string, isStart: boolean, isEnd: boolean): string => {
+  const getNodeColor = (type: string, isStart: boolean, isEnd: boolean, isInRoute: boolean = false): string => {
     if (isStart) return '#FF4444'; // Rojo brillante para punto de inicio
     if (isEnd) return '#00BFFF'; // Azul cielo para punto de destino
     
     switch (type) {
-      case 'aula': return '#FFD700'; // Amarillo dorado para aulas
+      case 'aula': return isInRoute ? '#FFD700' : '#D4A574'; // Amarillo dorado para aulas en ruta, amarillo apagado para las demás
       case 'pasillo': return '#90EE90'; // Verde claro para pasillos
       case 'escalera': return '#4169E1'; // Azul real para escaleras
       case 'salida': return '#FF69B4'; // Rosa para salidas
@@ -257,12 +260,12 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
     return '#E0E0E0'; // Gris claro para conexiones disponibles
   };
 
-  const width = 2200;
-  const height = 1500; // Aumentado para mejor distribución
+  const width = 2800;
+  const height = 1800; // Aumentado para mejor distribución
 
   return (
     <div className="w-full bg-white rounded-lg shadow-lg p-4">
-      <h3 className="text-lg font-semibold mb-4">Visualización de la Ruta ({route.length} nodos)</h3>
+      <h3 className="text-xl font-bold mb-4 text-gray-900">Visualización de la Ruta ({route.length} nodos)</h3>
       
       {/* Leyenda del Grafo */}
       <div className="bg-white border border-gray-300 rounded-lg p-4 mb-4">
@@ -283,15 +286,15 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full" style={{backgroundColor: '#FFD700'}}></div>
-                <span className="text-sm text-gray-800 font-medium">Aulas en la ruta</span>
+                <span className="text-sm text-gray-800 font-medium">Aulas</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full" style={{backgroundColor: '#90EE90'}}></div>
-                <span className="text-sm text-gray-800 font-medium">Pasillos en la ruta</span>
+                <span className="text-sm text-gray-800 font-medium">Pasillos</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full" style={{backgroundColor: '#4169E1'}}></div>
-                <span className="text-sm text-gray-800 font-medium">Escaleras en la ruta</span>
+                <span className="text-sm text-gray-800 font-medium">Escaleras</span>
               </div>
             </div>
           </div>
@@ -307,10 +310,6 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full bg-orange-500 border-2 border-gray-800 text-white text-xs flex items-center justify-center font-bold">1</div>
                 <span className="text-sm text-gray-800 font-medium">Números indican orden de recorrido</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full bg-gray-300 border border-gray-400 opacity-60"></div>
-                <span className="text-sm text-gray-800 font-medium">Nodos disponibles (sin etiquetas)</span>
               </div>
             </div>
           </div>
@@ -329,7 +328,7 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
 
       {/* SVG del grafo */}
       <div className="border-2 border-gray-300 rounded-lg bg-white shadow-inner w-full overflow-hidden">
-        <svg width="100%" height="700" className="bg-gradient-to-br from-blue-50 to-indigo-50" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
+        <svg width="100%" height="900" className="bg-gradient-to-br from-blue-50 to-indigo-50" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMinYMin meet">
           {/* Definir marcadores para las flechas */}
           <defs>
             <marker
@@ -394,9 +393,9 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
             <g key={`piso-${piso}`}>
               <rect
                 x={30}
-                y={80 + (piso - 1) * 320 - 30}
-                width={1720}
-                height={280}
+                y={80 + (piso - 1) * 400 - 30}
+                width={2320}
+                height={350}
                 fill="rgba(240, 248, 255, 0.3)"
                 stroke="rgba(70, 130, 180, 0.5)"
                 strokeWidth="2"
@@ -405,7 +404,7 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
               />
               <rect
                 x={30}
-                y={80 + (piso - 1) * 320 - 30}
+                y={80 + (piso - 1) * 400 - 30}
                 width={120}
                 height={30}
                 fill="rgba(70, 130, 180, 0.8)"
@@ -413,8 +412,8 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
               />
               <text
                 x={90}
-                y={80 + (piso - 1) * 320 - 10}
-                fontSize="16"
+                y={80 + (piso - 1) * 400 - 10}
+                fontSize="20"
                 fill="white"
                 textAnchor="middle"
                 className="font-bold"
@@ -429,7 +428,7 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
             const isStart = route[0] === node.id;
             const isEnd = route[route.length - 1] === node.id;
             const isInRoute = route.includes(node.id);
-            const color = getNodeColor(node.type, isStart, isEnd);
+            const color = getNodeColor(node.type, isStart, isEnd, isInRoute);
             const routeIndex = route.indexOf(node.id);
             
             return (
@@ -449,7 +448,7 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
                   cx={node.x}
                   cy={node.y}
                   r={isInRoute ? "20" : "12"}
-                  fill={isInRoute ? color : "#E5E7EB"}
+                  fill={color}
                   stroke={isInRoute ? "#333" : "#9CA3AF"}
                   strokeWidth={isInRoute ? "3" : "1"}
                   opacity={isInRoute ? 1 : 0.6}
@@ -463,38 +462,36 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
                       x={node.x}
                       y={node.y + 7}
                       textAnchor="middle"
-                      fontSize="16"
-                      fill={isStart || isEnd ? "#FFF" : "#000"}
+                      fontSize="20"
+                      fill={isStart || isEnd || node.type === 'escalera' ? "#FFF" : "#000"}
                       className="font-bold"
                     >
                       {routeIndex + 1}
                     </text>
                     
                     {/* Etiqueta del nodo */}
+                    {/* Fondo blanco para mejor contraste */}
+                    <rect
+                      x={node.x - (node.id.length * 6)}
+                      y={node.y - 55}
+                      width={node.id.length * 12}
+                      height="24"
+                      fill="rgba(255, 255, 255, 0.9)"
+                      stroke="rgba(0, 0, 0, 0.2)"
+                      strokeWidth="0.5"
+                      rx="4"
+                    />
                     <text
                       x={node.x}
                       y={node.y - 35}
                       textAnchor="middle"
-                      fontSize="11"
+                      fontSize="18"
                       fill="#333"
-                      className="font-semibold"
+                      className="font-bold"
                     >
                       {node.id.replace('_', ' ')}
                     </text>
                     
-                    {/* Indicador de piso (solo para nodos que no sean escaleras) */}
-                    {node.type !== 'escalera' && (
-                      <text
-                        x={node.x}
-                        y={node.y + 45}
-                        textAnchor="middle"
-                        fontSize="9"
-                        fill="#666"
-                        className="font-medium"
-                      >
-                        Piso {node.piso}
-                      </text>
-                    )}
                   </>
                 )}
               </g>
@@ -505,7 +502,7 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
       
       {/* Información de la Ruta de Evacuación */}
       <div className="bg-white border border-gray-300 rounded-lg p-4 mt-4">
-        <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+        <h4 className="font-bold text-xl mb-3 flex items-center gap-2 text-gray-900">
           📋 Información de la Ruta de Evacuación
         </h4>
         
@@ -540,7 +537,7 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
           <h5 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
             🗺️ Recorrido Paso a Paso:
           </h5>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-48 overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {route.map((node, index) => {
               const nodeType = getNodeType(node);
               const piso = getPiso(node);
@@ -576,7 +573,10 @@ export default function GraphVisualization({ route, allConnections }: GraphVisua
                       <span className="font-bold text-sm">{index + 1}. {node.replace('_', ' ')}</span>
                     </div>
                   </div>
-                  <span className="text-xs font-medium opacity-75">Piso {piso}</span>
+                  {/* Mostrar piso solo para nodos que no sean escaleras */}
+                  {nodeType !== 'escalera' && (
+                    <span className="text-xs font-medium opacity-75">Piso {piso}</span>
+                  )}
                 </div>
               );
             })}

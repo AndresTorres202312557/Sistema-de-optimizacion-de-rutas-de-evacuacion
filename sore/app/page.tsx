@@ -190,7 +190,7 @@ export default function Home() {
                     <div className="w-5 h-5 border-2 border-gray-600 dark:border-gray-300 rounded" />
                     Ruta Detallada:
                   </h3>
-                  <div className="bg-white dark:bg-gray-700 rounded-lg p-4 shadow-inner max-h-60 overflow-y-auto">
+                  <div className="bg-white dark:bg-gray-700 rounded-lg p-4 shadow-inner">
                     <ol className="space-y-2">
                       {route.rutaLabels.map((label: string, idx: number) => (
                         <li key={idx} className="flex items-center">
