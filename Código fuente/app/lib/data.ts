@@ -15,7 +15,8 @@ export interface Row {
 
 export function leerDatasetExcel(): Row[] {
   // Use 1000-connection clean dataset with only Aula_XXX, Pasillo_XXX, Escalera_XXX
-  const jsonPath = path.join(process.cwd(), 'app', 'lib', 'dataset-1000-limpio.json');
+  const projectRoot = path.resolve(process.cwd(), '..');
+  const jsonPath = path.join(projectRoot, 'dataset', 'dataset-1000-limpio.json');
   let jsonData;
   
   try {
@@ -77,7 +78,7 @@ export function leerDatasetExcel(): Row[] {
   } catch (error) {
     console.error('Error loading extended dataset:', error);
     // Fallback to clean dataset  
-    const fallbackPath = path.join(process.cwd(), 'app', 'lib', 'dataset-final-limpio.json');
+    const fallbackPath = path.join(projectRoot, 'dataset', 'dataset-final-limpio.json');
     if (!fs.existsSync(fallbackPath)) {
       throw new Error(`Fallback dataset not found: ${fallbackPath}`);
     }
